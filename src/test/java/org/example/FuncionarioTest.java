@@ -4,12 +4,9 @@ import net.jqwik.api.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.example.crud.CriarFuncionario.funcionarios;
-import org.example.Funcionario;
-import org.example.crud.CriarFuncionario;
+import org.example.domain.Funcionario;
 
 class FuncionarioTest {
 

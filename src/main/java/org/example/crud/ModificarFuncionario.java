@@ -1,12 +1,10 @@
 package org.example.crud;
 
-import org.example.Funcionario;
+import org.example.domain.Funcionario;
 
 import java.util.Optional;
 import java.util.Scanner;
 import static org.example.crud.CriarFuncionario.funcionarios;
-import static org.example.crud.VisualizarFuncionario.visualizarFuncionario;
-
 
 
 public class ModificarFuncionario {

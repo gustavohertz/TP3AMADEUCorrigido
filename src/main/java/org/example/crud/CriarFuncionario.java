@@ -1,6 +1,6 @@
 package org.example.crud;
 
-import org.example.Funcionario;
+import org.example.domain.Funcionario;
 import java.util.*;
 
 public class CriarFuncionario {

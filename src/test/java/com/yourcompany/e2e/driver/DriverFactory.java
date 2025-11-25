@@ -4,24 +4,27 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class DriverFactory {
 
     public static WebDriver getDriver() {
-        // Pode vir de uma variável de ambiente ou propriedade do sistema
-        String browser = System.getProperty("browser", "chrome").toLowerCase();
+        WebDriverManager.chromedriver().setup();
 
-        switch (browser) {
-            case "firefox":
-                WebDriverManager.firefoxdriver().setup();
-                return new FirefoxDriver();
-            case "chrome":
-            default:
-                WebDriverManager.chromedriver().setup();
-                ChromeOptions options = new ChromeOptions();
-                options.addArguments("--remote-allow-origins=*"); // Fix comum para Chrome atual
-                return new ChromeDriver(options);
+        ChromeOptions options = new ChromeOptions();
+
+        // Configurações para rodar liso no CI/CD e Localmente
+        options.addArguments("--remote-allow-origins=*");
+
+        // Verifica se passamos a propriedade -Dheadless=true no Maven
+        String headless = System.getProperty("headless");
+        if ("true".equals(headless)) {
+            options.addArguments("--headless=new"); // Modo sem janela
+            options.addArguments("--disable-gpu");
+            options.addArguments("--window-size=1920,1080");
+            options.addArguments("--no-sandbox");
+            options.addArguments("--disable-dev-shm-usage");
         }
+
+        return new ChromeDriver(options);
     }
 }
