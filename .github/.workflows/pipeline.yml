@@ -1,0 +1,38 @@
+name: Java CI/CD com Maven e Selenium
+
+# Triggers: Quando essa pipeline vai rodar?
+on:
+  push:
+    branches: [ "main", "TP4" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest # Runner hospedado pelo GitHub
+
+    steps:
+      # 1. Baixa o código do repositório
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      # 2. Configura o Java 19 (ou 21/17)
+      - name: Configurar JDK 19
+        uses: actions/setup-java@v4
+        with:
+          java-version: '19'
+          distribution: 'temurin'
+          cache:maven: true
+
+      # 3. Executa o Backend e Testes Unitários/Integração
+      - name: Build e Testes com Maven
+        # O parâmetro -Dheadless=true avisa ao Selenium para não tentar abrir janela visual
+        run: mvn clean install -Dheadless=true
+
+      # 4. (Opcional) Publica relatório de testes se falhar
+      - name: Publicar relatório de testes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: target/surefire-reports/
